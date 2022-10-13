@@ -1,5 +1,9 @@
 #include <iostream>
 #include <vector>
+#include "vendor/nlohmann/json.hpp"
+#include <fstream>
+using json = nlohmann::json;
+
 const float TRB_FACTOR = .75;
 
 struct UserInfo {
