@@ -1,3 +1,4 @@
+#include <string>}
 #include <iostream>
 #include <vector>
 #include "vendor/nlohmann/json.hpp"
@@ -9,45 +10,28 @@ const float TR_FACTOR = .75;
 struct UserInfo {
 	float ormBenchPress;
 	
-	float benchPressTRM(){
-		float TenRepBench =0;
-		std::cout << "orm is: " << ormBenchPress << std::endl;
-		TenRepBench = ormBenchPress * TR_FACTOR;  
-		return TenRepBench; 
+	float tenRepMax(float orm){
+		float tenRep =0;
+		std::cout << "orm is: " << orm << std::endl;
+		tenRep = orm * TR_FACTOR;  
+		return tenRep; 
 	}
 
 };
-class User {
-private:
-	float ormBenchPress;
-	float ormLatPullDown;
-	float ormDumbelCurl;	
-public;
-//not sure what I want to do with this yet
-}
-bool testExpected(float trm, float expected) {
-	if(trm != expected) {
-		std::cerr << "failure: unexpected value for calculation"
-			<< std::endl;
-		std::cout << "expected, " << expected << ". recieved, " << trm << "." << std::endl; 
-		return false;
-	}
-	return true;
-}
-bool testExpectedPlates(std::vector<int> usedWeights, std::vector<int> expectedWeights) {
-	if (usedWeights.size() != expectedWeights.size()) {
-		std::cerr<< "unmatching vector size" << std::endl;
-	}	
-	for(int i =0; i < usedWeights.size(); i++) {
-		if(usedWeights[i] != expectedWeights[i]) {
-			std::cerr << "unmatching vector element, expected: " << expectedWeights[i] << ", but recieved:"
-				<< usedWeights[i] << std::endl;
-			return false;
-		}	
-	}	
-	return true;
-}
+struct Workout {
+	std::string freeOrMachine;
 
+//choose return type based on decision	
+	 auto chooseWeightSelector(float tenRepMax) {
+		if(freeOrMachine == "free") {
+			std::vector<int> freeWorkoutPlates = freePlateSelector(tenRepMax);	
+			return freeWorkoutPlates;
+		} else {
+			int chosenWeight = machineWeightSelector(tenRepMax);
+			return chosenWeight;
+		}
+	}
+};
 int machineWeightSelector(int targetWeight) {
 	int machineWeight[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
 		130, 140, 150, 160, 170, 180, 190, 200};
@@ -58,7 +42,7 @@ int machineWeightSelector(int targetWeight) {
 			currentWeight += weight;
 		}
 	}
-	std::cout << "achievable weight machine weight: " << std::endl;
+	//std::cout << "achievable weight machine weight: " << std::endl;
 	return currentWeight;
 }
 std::vector<int> freePlateSelector(float targetWeight) {
