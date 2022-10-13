@@ -24,9 +24,11 @@ struct Workout {
 //choose return type based on decision	
 	 auto chooseWeightSelector(float tenRepMax) {
 		if(freeOrMachine == "free") {
+			->decltype(std::vector<int>);
 			std::vector<int> freeWorkoutPlates = freePlateSelector(tenRepMax);	
 			return freeWorkoutPlates;
 		} else {
+			->decltype(int);
 			int chosenWeight = machineWeightSelector(tenRepMax);
 			return chosenWeight;
 		}
