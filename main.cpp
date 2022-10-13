@@ -4,7 +4,7 @@
 #include <fstream>
 using json = nlohmann::json;
 
-const float TRB_FACTOR = .75;
+const float TR_FACTOR = .75;
 
 struct UserInfo {
 	float ormBenchPress;
@@ -12,12 +12,19 @@ struct UserInfo {
 	float benchPressTRM(){
 		float TenRepBench =0;
 		std::cout << "orm is: " << ormBenchPress << std::endl;
-		TenRepBench = ormBenchPress * TRB_FACTOR;  
+		TenRepBench = ormBenchPress * TR_FACTOR;  
 		return TenRepBench; 
 	}
 
 };
-
+class User {
+private:
+	float ormBenchPress;
+	float ormLatPullDown;
+	float ormDumbelCurl;	
+public;
+//not sure what I want to do with this yet
+}
 bool testExpected(float trm, float expected) {
 	if(trm != expected) {
 		std::cerr << "failure: unexpected value for calculation"
@@ -40,17 +47,29 @@ bool testExpectedPlates(std::vector<int> usedWeights, std::vector<int> expectedW
 	}	
 	return true;
 }
-std::vector<int> benchPlateSelector(float targetWeight) {
+
+int machineWeightSelector(int targetWeight) {
+	int machineWeight[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
+		130, 140, 150, 160, 170, 180, 190, 200};
+	std::cout << "target Weight: " << targetWeight << std::endl;
+	int currentWeight = 0;
+	for (const auto weight : machineWeight) {
+		while(weight <= targetWeight) {
+			currentWeight += weight;
+		}
+	}
+	std::cout << "achievable weight machine weight: " << std::endl;
+	return currentWeight;
+}
+std::vector<int> freePlateSelector(float targetWeight) {
 	std::vector<int> usedWeights;	
 	int currentWeight = 0;
 	std::cout << "targeteWeight: " << targetWeight << std::endl;
-	//std::cout << "currentWeight: " << currentWeight << std::endl;
 	int plateWeights[] = {45, 35, 25, 10, 5};
 	for (const auto weight : plateWeights){
 		while(currentWeight + weight <= targetWeight){
 			usedWeights.push_back(weight);
 			currentWeight += weight;
-			//std::cout << "current weight: " << currentWeight << std::endl;
 		}
 	}
 	std::cout << "Achievable Weight Was: " << currentWeight << std::endl;
@@ -58,11 +77,11 @@ std::vector<int> benchPlateSelector(float targetWeight) {
 	std::cout << "Remainder of Weight Was: " << remainderWeight << std::endl;
 	for(auto element : usedWeights) {
 		std::cout << "plate: " << element << std::endl;
-	}// Issue with recognzing more than one plate in the plates used!!!!!
+	}
 	return usedWeights;
 }
 
-std::vector<float> basicPercBenchGen(float oneRepMax){
+std::vector<float> basicPercGen(float oneRepMax){
 	float ninetyPerc = .90;
 	float seventyPerc = .70;
 	float fiftyPerc = .50;
@@ -72,28 +91,23 @@ std::vector<float> basicPercBenchGen(float oneRepMax){
 	percWeight.push_back(fiftyPerc*oneRepMax);
 	return percWeight;
 }
-void percBenchReader(float oneRepMax) {
+void percReader(float oneRepMax) {
 	std::vector<float> readPercWeight;
-	for(int i = 0; i < basicPercBenchGen(oneRepMax).size(); i++){
-		readPercWeight.push_back(basicPercBenchGen(oneRepMax)[i]);
+	for(int i = 0; i < basicPercGen(oneRepMax).size(); i++){
+		readPercWeight.push_back(basicPercGen(oneRepMax)[i]);
 	}
 	for(auto element : readPercWeight) {
-
 		std::cout << "diff percentage weight: " << 
 			element << std::endl;
-		benchPlateSelector(element);
+		freePlateSelector(element);
 	}
 
 }
 int main(int argc, char *argv[]) {
+
+	std::ifstream f("weight_lifting_profile.json");
+	json userData = json::parse(f);
 	UserInfo userProfile1;
-	UserInfo userProfile2;
-	userProfile1.ormBenchPress = 185;
-	userProfile2.ormBenchPress = 150;
-	float expectedForPf2 = 112.5;
-	//testExpected(userProfile2.benchPressTRM(),expectedForPf2);
-	std::vector<int> expectedPlatesForPf2 = {45,45,45,10,5};
-	benchPlateSelector(userProfile2.benchPressTRM());
-	percBenchReader(userProfile2.ormBenchPress);
-	//testExpectedPlates(benchPlateSelector(userProfile2.ormBenchPress), expectedPlatesForPf2);
+	userProfile1.ormBenchPress = userData["one_rep_maxes"]["Stevie"]["bench_press"];
+	std::cout << userProfile1.ormBenchPress << std::endl;
 }
