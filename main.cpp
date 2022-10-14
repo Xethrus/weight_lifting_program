@@ -9,9 +9,10 @@ using json = nlohmann::json;
 const float TR_FACTOR = .75;
 
 struct UserInfo {
-	float ormBenchPressF;
-	float ormLatPullDownM;
-	float ormBicepCurlF;	
+	std::map<std::string, float> userMap;
+	//float ormBenchPressF;
+	//float ormLatPullDownM;
+	//float ormBicepCurlF;	
 	float tenRepMax(float orm){
 		float tenRep =0;
 		std::cout << "orm is: " << orm << std::endl;
@@ -74,8 +75,12 @@ void percReader(float oneRepMax) {
 	}
 
 }
-std::map<std::string, float> workoutInfo;
+std::map<std::string, float> generateUserMap(std::ifstream jsonFile){
+	json userData = json::parse(jsonFile);
+	UserInfo userMap; //assign key value pairs 
 
+}
+//make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
 int main(int argc, char *argv[]) {
 
 	std::ifstream f("weight_lifting_profile.json");
