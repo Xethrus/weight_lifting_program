@@ -3,35 +3,20 @@
 #include <vector>
 #include "vendor/nlohmann/json.hpp"
 #include <fstream>
+#include <map>
 using json = nlohmann::json;
 
 const float TR_FACTOR = .75;
 
 struct UserInfo {
-	float ormBenchPress;
-	
+	float ormBenchPressF;
+	float ormLatPullDownM;
+	float ormBicepCurlF;	
 	float tenRepMax(float orm){
 		float tenRep =0;
 		std::cout << "orm is: " << orm << std::endl;
 		tenRep = orm * TR_FACTOR;  
 		return tenRep; 
-	}
-
-};
-struct Workout {
-	std::string freeOrMachine;
-
-//choose return type based on decision	
-	 auto chooseWeightSelector(float tenRepMax) {
-		if(freeOrMachine == "free") {
-			->decltype(std::vector<int>);
-			std::vector<int> freeWorkoutPlates = freePlateSelector(tenRepMax);	
-			return freeWorkoutPlates;
-		} else {
-			->decltype(int);
-			int chosenWeight = machineWeightSelector(tenRepMax);
-			return chosenWeight;
-		}
 	}
 };
 int machineWeightSelector(int targetWeight) {
@@ -89,11 +74,13 @@ void percReader(float oneRepMax) {
 	}
 
 }
+std::map<std::string, float> workoutInfo;
+
 int main(int argc, char *argv[]) {
 
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
 	UserInfo userProfile1;
 	userProfile1.ormBenchPress = userData["one_rep_maxes"]["Stevie"]["bench_press"];
-	std::cout << userProfile1.ormBenchPress << std::endl;
+
 }
