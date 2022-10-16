@@ -20,6 +20,24 @@ struct UserInfo {
 		return tenRep; 
 	}
 };
+class UserProfile {
+private:
+	std::string name;
+public:
+	void setName(std::string newName) {
+		name = newName;
+	}
+	std::map<std::string, float> workoutMap;
+	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
+	std::map<std::string, float> fillWorkoutMap(const json& parsedUserData) {
+		for(const auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
+			for(const auto& [workout, weight] : name.items()) {
+				workoutMap.insert({workout, weight});
+			}
+			nestingUserMap.insert({name, workoutMap});
+		}
+	}
+};
 int machineWeightSelector(int targetWeight) {
 	int machineWeight[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
 		130, 140, 150, 160, 170, 180, 190, 200};
@@ -93,6 +111,5 @@ int main(int argc, char *argv[]) {
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
 	UserInfo userProfile1;
-	userProfile1.ormBenchPress = userData["one_rep_maxes"]["Stevie"]["bench_press"];
 	generateUserMap(userData);
 }
