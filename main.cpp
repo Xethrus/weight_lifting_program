@@ -1,4 +1,4 @@
-#include <string>}
+#include <string>
 #include <iostream>
 #include <vector>
 #include "vendor/nlohmann/json.hpp"
@@ -10,9 +10,9 @@ const float TR_FACTOR = .75;
 
 struct UserInfo {
 	std::map<std::string, float> userMap;
-	//float ormBenchPressF;
-	//float ormLatPullDownM;
-	//float ormBicepCurlF;	
+	float ormBenchPress;
+	//float ormLatPullDown;
+	//float ormBicepCurl;	
 	float tenRepMax(float orm){
 		float tenRep =0;
 		std::cout << "orm is: " << orm << std::endl;
@@ -75,17 +75,24 @@ void percReader(float oneRepMax) {
 	}
 
 }
-std::map<std::string, float> generateUserMap(std::ifstream jsonFile){
-	json userData = json::parse(jsonFile);
-	UserInfo userMap; //assign key value pairs 
+std::map<std::string, float> generateUserMap(json userData){
+	for(const auto& [key, value] : userData["one_rep_maxes"].items()) {
+		std::cout << key << " and value: " << value << std::endl;
+		for(const auto& [key2, value2] : value.items()) {
+			std::cout << key2 << " and value:" << value2 << std::endl;
+		}
+	}
 
+	std::cout << "print statement" << std::endl;
+	std::map<std::string, float> theMap;
+	return theMap;
 }
-//make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
+//make map for each person, meaning "Stevie" will riewpigrqpugr3piggpuhfpihfpiqhfpihqf::have a map with his workouts and weights key - value
 int main(int argc, char *argv[]) {
 
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
 	UserInfo userProfile1;
 	userProfile1.ormBenchPress = userData["one_rep_maxes"]["Stevie"]["bench_press"];
-
+	generateUserMap(userData);
 }
