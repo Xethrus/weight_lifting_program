@@ -21,12 +21,7 @@ struct UserInfo {
 	}
 };
 class UserProfile {
-private:
-	std::string name;
 public:
-	void setName(std::string newName) {
-		name = newName;
-	}
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
 	std::map<std::string, float> fillWorkoutMap(const json& parsedUserData) {
@@ -36,6 +31,9 @@ public:
 			}
 			nestingUserMap.insert({name, workoutMap});
 		}
+	}
+	void displayUserWorkout(std::string name) {
+		std::cout << workoutMap[name] << std::endl;
 	}
 };
 int machineWeightSelector(int targetWeight) {
@@ -110,6 +108,7 @@ int main(int argc, char *argv[]) {
 
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
-	UserInfo userProfile1;
-	generateUserMap(userData);
+	UserProfile everyone;
+	everyone.fillWorkoutMap(userData);
+	everyone.displayUserWorkout("Stevie");
 }
