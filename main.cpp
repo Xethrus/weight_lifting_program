@@ -31,9 +31,14 @@ public:
 			}
 			nestingUserMap.insert({name, workoutMap});
 		}
+		return workoutMap; //not neccessary i dont think lol
 	}
+	//def doesnt work lol
 	void displayUserWorkout(std::string name) {
-		std::cout << workoutMap[name] << std::endl;
+		for(const auto& [workout, weight] : workoutMap[name]) {
+			std::cout << "The workout is: " << workout << std::endl;
+			std::cout << "weight is: " << weight << std::endl;
+		}
 	}
 };
 int machineWeightSelector(int targetWeight) {
@@ -109,6 +114,6 @@ int main(int argc, char *argv[]) {
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
 	UserProfile everyone;
-	everyone.fillWorkoutMap(userData);
-	everyone.displayUserWorkout("Stevie");
+	//everyone.fillWorkoutMap(userData);
+	//everyone.displayUserWorkout("Stevie");
 }
