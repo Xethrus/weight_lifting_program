@@ -24,7 +24,7 @@ class UserProfile {
 public:
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
-	std::map<std::string, float> fillWorkoutMap(const json& parsedUserData) {
+	std::map<std::string, float> fillWorkoutMap(json parsedUserData) {
 		for(const auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
 			for(const auto& [workout, weight] : name.items()) {
 				workoutMap.insert({workout, weight});
@@ -34,12 +34,14 @@ public:
 		return workoutMap; //not neccessary i dont think lol
 	}
 	//def doesnt work lol
-	void displayUserWorkout(std::string name) {
-		for(const auto& [workout, weight] : workoutMap[name]) {
-			std::cout << "The workout is: " << workout << std::endl;
-			std::cout << "weight is: " << weight << std::endl;
-		}
-	}
+	void displayUserWorkout() {
+		for(auto& [name, map] : nestingUserMap) {
+			std::cout << "for user: " << name << std::endl;
+			for(auto& [workout, weight] : workoutMap) {
+				std::cout << "The workout is: " << workout << std::endl;
+				std::cout << "weight is: " << weight << std::endl;
+			}
+	};
 };
 int machineWeightSelector(int targetWeight) {
 	int machineWeight[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
@@ -108,12 +110,12 @@ std::map<std::string, float> generateUserMap(json userData){
 	std::map<std::string, float> theMap;
 	return theMap;
 }
-//make map for each person, meaning "Stevie" will riewpigrqpugr3piggpuhfpihfpiqhfpihqf::have a map with his workouts and weights key - value
+//make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
 int main(int argc, char *argv[]) {
 
 	std::ifstream f("weight_lifting_profile.json");
 	json userData = json::parse(f);
 	UserProfile everyone;
-	//everyone.fillWorkoutMap(userData);
-	//everyone.displayUserWorkout("Stevie");
-}
+	everyone.fillWorkoutMap(userData);
+	everyone.displayUserWorkout();
+};
