@@ -25,7 +25,8 @@ public:
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
 	std::map<std::string, float> fillWorkoutMap(json parsedUserData) {
-		std::cout << parsedUserData["one_rep_max"].items() << std::endl;
+		std::cout << "hello" << std::endl;
+		std::cout << parsedUserData["one_rep_max"].items() << std::endl;//this is not getting data-not passing in data
 		for(auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
 			for(auto& [workout, weight] : name.items()) {
 				std::cout << "workout: " << workout << ", weight: " << weight << std::endl;
@@ -124,9 +125,10 @@ std::map<std::string, float> generateUserMap(json userData){
 //make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
 int main(int argc, char *argv[]) {
 
-	std::ifstream f("weight_lifting_profile.json");
-	json userData = json::parse(f);
 	UserProfile everyone;
-	everyone.fillWorkoutMap(userData);
+	std::ifstream i("weight_lifting_profile.json");
+	json j;
+	i >> j;
+	everyone.fillWorkoutMap(j);
 	everyone.displayUserWorkout();
 };
