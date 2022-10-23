@@ -25,22 +25,31 @@ public:
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
 	std::map<std::string, float> fillWorkoutMap(json parsedUserData) {
-		for(const auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
-			for(const auto& [workout, weight] : name.items()) {
+		for(auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
+			for(auto& [workout, weight] : name.items()) {
 				workoutMap.insert({workout, weight});
 			}
 			nestingUserMap.insert({name, workoutMap});
 		}
 		return workoutMap; //not neccessary i dont think lol
 	}
+	bool testMapForContent(std::map<std::string, std::map<std::string, float>>) {
+		for(auto [key, value] : nestingUserMap) {
+			std::cout << key << std::endl; 
+		}
+	}
+
 	//def doesnt work lol
 	void displayUserWorkout() {
+		std::cout << "function reached- displayUW" << std::endl;//reached
 		for(auto& [name, map] : nestingUserMap) {
+			std::cout << "reached inside for DUW" << std::endl; //not reached
 			std::cout << "for user: " << name << std::endl;
 			for(auto& [workout, weight] : workoutMap) {
 				std::cout << "The workout is: " << workout << std::endl;
 				std::cout << "weight is: " << weight << std::endl;
 			}
+		}
 	};
 };
 int machineWeightSelector(int targetWeight) {
