@@ -27,6 +27,7 @@ public:
 	std::map<std::string, float> fillWorkoutMap(json parsedUserData) {
 		for(auto& [onerepmax, name] : parsedUserData["one_rep_max"].items()) {	
 			for(auto& [workout, weight] : name.items()) {
+				std::cout << "workout: " << workout << ", weight: " << weight << std::endl;
 				workoutMap.insert({workout, weight});
 			}
 			nestingUserMap.insert({name, workoutMap});
