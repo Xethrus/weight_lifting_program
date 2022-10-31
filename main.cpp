@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -25,14 +26,13 @@ public:
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
 	std::map<std::string, float> fillWorkoutMap(json& parsedUserData) {
-		std::cout << "hello" << std::endl;
-		std::cout << parsedUserData["one_rep_maxes"].items() << std::endl;//this is not getting data-not passing in data
 		for(auto& [onerepmax, name] : parsedUserData["one_rep_maxes"].items()) {	
 			for(auto& [workout, weight] : name.items()) {
 				std::cout << "workout: " << workout << ", weight: " << weight << std::endl;
 				workoutMap.insert({workout, weight});
 			}
-			nestingUserMap.insert({name, workoutMap});
+		
+			nestingUserMap.insert({static_cast<std::string>(name), workoutMap}); // tjis doesnt work unmatching pair
 		}
 		return workoutMap; //not neccessary i dont think lol
 	}
