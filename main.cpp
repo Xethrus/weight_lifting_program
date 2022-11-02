@@ -45,9 +45,12 @@ public:
 	void displayUserWorkout() {
 		for(auto& [name, map] : nestingUserMap) {
 			std::cout << "for user: " << name << std::endl;
-			for(auto& [workout, weight] : workoutMap) {
+			for(auto& [workout, weight] : map) {
 				std::cout << "The workout is: " << workout << std::endl;
 				std::cout << "weight is: " << weight << std::endl;
+			}//broken somehow?/????!!!! 
+			for(auto [key, value] : workoutMap) {
+				std::cout << value << std::endl;
 			}
 		}
 	};
