@@ -25,15 +25,20 @@ class UserProfile {
 public:
 	std::map<std::string, float> workoutMap;
 	std::map<std::string, std::map<std::string, float>> nestingUserMap;	
-	std::map<std::string, float> fillWorkoutMap(json& parsedUserData) {
+	void fillWorkoutMap(json& parsedUserData) {
 		for(auto& [name, value] : parsedUserData["one_rep_maxes"].items()) {	
+			workoutMap.clear();
+			std::cout << value.items() << std::endl;
 			for(auto& [workout, weight] : value.items()) {
 				std::cout << "workout: " << workout << ", weight: " << weight << std::endl;
 				workoutMap.insert({workout, weight});
 			}
 			nestingUserMap.insert({name, workoutMap}); // tjis doesnt work unmatching pair
 		}
-		return workoutMap; //not neccessary i dont think lol
+		for(auto [key, value] : workoutMap) {
+			std::cout << value << std::endl;
+			// is the issue that we are only printing one pair?????????
+		}
 	}
 	bool testMapForContent(std::map<std::string, std::map<std::string, float>>) {
 		for(auto [key, value] : nestingUserMap) {
@@ -48,9 +53,6 @@ public:
 			for(auto& [workout, weight] : map) {
 				std::cout << "The workout is: " << workout << std::endl;
 				std::cout << "weight is: " << weight << std::endl;
-			}//broken somehow?/????!!!! 
-			for(auto [key, value] : workoutMap) {
-				std::cout << value << std::endl;
 			}
 		}
 	};
@@ -125,10 +127,11 @@ std::map<std::string, float> generateUserMap(json userData){
 //make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
 int main(int argc, char *argv[]) {
 
-	UserProfile everyone;
+	UserProfile user1;
+	UserProfile user2;
 	std::ifstream i("weight_lifting_profile.json");
 	json j;
 	i >> j;
-	everyone.fillWorkoutMap(j);
-	everyone.displayUserWorkout();
+	user1.fillWorkoutMap(j);
+	user1.displayUserWorkout();
 };
