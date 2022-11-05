@@ -49,9 +49,18 @@ public:
 			}
 		}
 	};
+	float tenRepMax(float orm){
+		float tenRep =0;
+		tenRep = orm * TR_FACTOR;  
+		return tenRep; 
+	}
 	void displayUserTRM(std::string userName) {
 		for(auto& [workout, weight] : nestingUserMap[userName]) {
-			std::cout << workout << std::endl;
+			std::cout << "for workout: " << workout << std::endl;
+			tenRepMax(static_cast<float>(weight));
+			std::cout << "the ten rep max is: " <<  
+			tenRepMax(static_cast<float>(weight)) << std::endl;
+				
 		}
 
 	}
@@ -134,4 +143,5 @@ int main(int argc, char *argv[]) {
 	user1.fillWorkoutMap(j);
 	user1.displayUserWorkout();
 	user1.displayUserTRM("Stevie");
+	user1.displayUserTRM("Jay");
 };
