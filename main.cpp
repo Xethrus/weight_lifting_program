@@ -12,8 +12,6 @@ const float TR_FACTOR = .75;
 struct UserInfo {
 	std::map<std::string, float> userMap;
 	float ormBenchPress;
-	//float ormLatPullDown;
-	//float ormBicepCurl;	
 	float tenRepMax(float orm){
 		float tenRep =0;
 		std::cout << "orm is: " << orm << std::endl;
@@ -28,25 +26,20 @@ public:
 	void fillWorkoutMap(json& parsedUserData) {
 		for(auto& [name, value] : parsedUserData["one_rep_maxes"].items()) {	
 			workoutMap.clear();
-			std::cout << value.items() << std::endl;
 			for(auto& [workout, weight] : value.items()) {
-				std::cout << "workout: " << workout << ", weight: " << weight << std::endl;
 				workoutMap.insert({workout, weight});
 			}
 			nestingUserMap.insert({name, workoutMap}); // tjis doesnt work unmatching pair
 		}
 		for(auto [key, value] : workoutMap) {
-			std::cout << value << std::endl;
-			// is the issue that we are only printing one pair?????????
+			std::cout << "the value: " << value << std::endl;
 		}
 	}
 	bool testMapForContent(std::map<std::string, std::map<std::string, float>>) {
 		for(auto [key, value] : nestingUserMap) {
-			std::cout << key << std::endl; 
+			std::cout << " the key value: " << key << std::endl; 
 		}
 	}
-
-	//def doesnt work lol
 	void displayUserWorkout() {
 		for(auto& [name, map] : nestingUserMap) {
 			std::cout << "for user: " << name << std::endl;
@@ -56,6 +49,13 @@ public:
 			}
 		}
 	};
+	void displayUserTRM(std::string userName) {
+		for(auto& [workout, weight] : nestingUserMap[userName]) {
+			std::cout << workout << std::endl;
+		}
+
+	}
+
 };
 int machineWeightSelector(int targetWeight) {
 	int machineWeight[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
@@ -67,7 +67,6 @@ int machineWeightSelector(int targetWeight) {
 			currentWeight += weight;
 		}
 	}
-	//std::cout << "achievable weight machine weight: " << std::endl;
 	return currentWeight;
 }
 std::vector<int> freePlateSelector(float targetWeight) {
@@ -124,7 +123,7 @@ std::map<std::string, float> generateUserMap(json userData){
 	std::map<std::string, float> theMap;
 	return theMap;
 }
-//make map for each person, meaning "Stevie" will have a map with his workouts and weights key - value
+
 int main(int argc, char *argv[]) {
 
 	UserProfile user1;
@@ -134,4 +133,5 @@ int main(int argc, char *argv[]) {
 	i >> j;
 	user1.fillWorkoutMap(j);
 	user1.displayUserWorkout();
+	user1.displayUserTRM("Stevie");
 };
