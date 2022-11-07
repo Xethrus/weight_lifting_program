@@ -10,6 +10,7 @@ using json = nlohmann::json;
 const float TR_FACTOR = 0.75;
 
 std::map<std::string, std::map<std::string, float>> globalMap;
+std::map<std::string, std::string> weightTypes;
 
 void fillNameWorkout (json& parsedUserData) {
   std::map<std::string, float> placeHolderMap;
@@ -22,29 +23,26 @@ void fillNameWorkout (json& parsedUserData) {
   }
 }
 
+std::string findWeightType (json& parsedUserData,
+      std::string workoutName) {
+  return parsedUserData["weight_type"[workoutName]]
+}
+
 class config {
   private:
 
-    std::map<std::string, std::map<std::string, float>> mapWithNestedMap;
-    
-    std::string name;
+    std::string username;
     
     std::map<std::string, float> workoutWeight;
 
   public: 
 
-    void fillNameWorkout (json& parsedUserData) {
-      for(auto& [name, value] : parsedUserData["one_rep_maxes"].items()) {
-        workoutWeight.clear();  
-        for(auto& [workout, weight] : value.items()) {
+    void fillPersonalInfo(std::string name, std::map<std::string,
+        std::map<std::string, float>> fullMap) {
+        username = name;         
+        for(auto& [workout, weight] : fullMap[name]) {
           workoutWeight.insert({workout, weight});
-        }
-        mapWithNestedMap.insert({name, workoutWeight});
-      }
-    }
-    void fillPersonalMap(std::string name) {
-      for(auto& [workout weight] : mapWithNestedMap[name]) {
-        
+        }  
       }
     }
 };
