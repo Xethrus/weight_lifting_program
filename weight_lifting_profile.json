@@ -1,0 +1,18 @@
+{
+    "one_rep_maxes": {
+        "Stevie": {
+              "bench_press": 185,
+              "cable_lat_pulldown": 65
+        },
+        "Jay": {
+            "bench_press": 150,
+	          "deadlift" : 5
+       	}
+    }, 
+    "weight_type": {
+      "bench_press": "free_weight",
+      "deadlift": "free_weight",
+      
+      "cable_lat_pulldown": "machine_weight"
+    }
+}
